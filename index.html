@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zaira Mae A. Lozada — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ============ TOKENS ============ */
+  :root{
+    --ink:#171614;
+    --paper:#F7F3E9;
+    --chalk:#1F4B3F;
+    --chalk-light:#2C6350;
+    --pencil:#FFCC29;
+    --coral:#FF5A5F;
+    --denim:#3A6EA5;
+    --shadow-sm: 4px 4px 0 var(--ink);
+    --shadow-md: 8px 8px 0 var(--ink);
+    --shadow-lg: 12px 12px 0 var(--ink);
+    --border: 3px solid var(--ink);
+    --border-thick: 4px solid var(--ink);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+    background-image:
+      radial-gradient(var(--ink) 1px, transparent 1px);
+    background-size: 26px 26px;
+    background-position: -13px -13px;
+    background-attachment: fixed;
+  }
+
+  h1,h2,h3{font-family:'Archivo Black', sans-serif; line-height:1.05;}
+
+  a{color:inherit; text-decoration:none;}
+
+  img{display:block; max-width:100%;}
+
+  ::selection{background:var(--pencil); color:var(--ink);}
+
+  :focus-visible{outline:3px dashed var(--ink); outline-offset:3px;}
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ============ NAV ============ */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:var(--paper);
+    border-bottom: var(--border-thick);
+  }
+  .nav-inner{
+    max-width:1120px; margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-brand{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:1.6rem;
+    transform:rotate(-2deg);
+    display:inline-block;
+  }
+  .nav-links{
+    display:flex; gap:6px; list-style:none;
+  }
+  .nav-links a{
+    display:inline-block;
+    padding:8px 14px;
+    font-weight:600;
+    font-size:0.95rem;
+    border: var(--border);
+    background:var(--paper);
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .nav-links a:hover{
+    transform: translate(-2px,-2px);
+    box-shadow: 5px 5px 0 var(--ink);
+    background:var(--pencil);
+  }
+  .nav-links a.active{
+    background:var(--chalk); color:var(--paper);
+  }
+  .nav-toggle{
+    display:none;
+    width:44px; height:40px;
+    border: var(--border);
+    background:var(--pencil);
+    box-shadow: 3px 3px 0 var(--ink);
+    cursor:pointer;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+  }
+  .nav-toggle span{width:22px; height:3px; background:var(--ink); display:block;}
+
+  @media (max-width: 760px){
+    .nav-links{
+      position:fixed; top:0; right:-100%; height:100vh; width:min(78vw, 320px);
+      background:var(--chalk);
+      flex-direction:column; gap:0;
+      padding:100px 24px 24px;
+      border-left: var(--border-thick);
+      transition: right 0.3s ease;
+    }
+    .nav-links.open{right:0;}
+    .nav-links a{
+      background:var(--paper); width:100%; text-align:center; margin-bottom:14px;
+    }
+    .nav-toggle{display:flex;}
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    padding:150px 0 90px;
+    min-height:100vh;
+    display:flex; align-items:center;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns: 300px 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  .hero-photo-wrap{
+    border: var(--border-thick);
+    background:var(--chalk);
+    box-shadow: var(--shadow-lg);
+    transform: rotate(-3deg);
+    padding:14px;
+    width:100%;
+    aspect-ratio: 1 / 1.1;
+    opacity:0;
+    animation: dropIn 0.6s 0.1s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .hero-photo-wrap svg{width:100%; height:100%; display:block;}
+
+  .hero-eyebrow-tag{
+    font-family:'Caveat', cursive;
+    font-size:1.9rem;
+    font-weight:700;
+    color:var(--coral);
+    display:inline-block;
+    transform:rotate(-2deg);
+    opacity:0;
+    animation: dropIn 0.6s 0.25s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .hero-name{
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    margin-top:6px;
+    opacity:0;
+    animation: dropIn 0.6s 0.4s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .hero-name .last{
+    display:block;
+    -webkit-text-stroke: 2px var(--ink);
+    color: var(--paper);
+    background-image: linear-gradient(var(--pencil), var(--pencil));
+    background-repeat:no-repeat;
+    background-size:100% 0.35em;
+    background-position: 0 88%;
+  }
+  .hero-tagline{
+    margin-top:22px;
+    max-width:46ch;
+    font-size:1.15rem;
+    font-weight:500;
+    opacity:0;
+    animation: dropIn 0.6s 0.55s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .hero-cta{
+    margin-top:32px;
+    display:flex; gap:14px; flex-wrap:wrap;
+    opacity:0;
+    animation: dropIn 0.6s 0.7s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .btn{
+    display:inline-block;
+    padding:14px 26px;
+    font-weight:700;
+    font-size:1rem;
+    background:var(--coral);
+    border: var(--border-thick);
+    box-shadow: var(--shadow-sm);
+    cursor:pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+  .btn.ghost{background:var(--paper);}
+  .btn:hover{transform:translate(-3px,-3px); box-shadow:7px 7px 0 var(--ink);}
+  .btn:active{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink);}
+
+  @keyframes dropIn{
+    from{opacity:0; transform:translateY(18px) rotate(0deg);}
+    to{opacity:1; transform:translateY(0) rotate(-3deg);}
+  }
+  .hero-eyebrow-tag, .hero-name, .hero-tagline, .hero-cta{
+    animation-name: fadeUp;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(16px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  @media (max-width: 760px){
+    .hero{padding:130px 0 60px;}
+    .hero-inner{grid-template-columns:1fr; gap:36px;}
+    .hero-photo-wrap{max-width:220px; margin:0 auto;}
+  }
+
+  /* ============ SECTION SHELL ============ */
+  section{padding:100px 0;}
+  .section-head{
+    display:flex; align-items:flex-end; gap:18px; margin-bottom:48px;
+    flex-wrap:wrap;
+  }
+  .section-head h2{font-size: clamp(2rem, 4.5vw, 3rem);}
+  .section-num{
+    font-family:'Caveat', cursive;
+    font-size:1.5rem;
+    color:var(--chalk);
+    border-bottom:3px solid var(--chalk);
+    padding-bottom:2px;
+  }
+
+  /* ============ ABOUT ============ */
+  .about{background:var(--chalk); color:var(--paper); position:relative;}
+  .about::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(0deg, rgba(247,243,233,0.06) 0 1px, transparent 1px 34px);
+    pointer-events:none;
+  }
+  .about .section-num{color:var(--pencil); border-color:var(--pencil);}
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap:50px;
+    position:relative;
+  }
+  .about-card{
+    background:var(--paper); color:var(--ink);
+    border: var(--border-thick);
+    box-shadow: var(--shadow-md);
+    padding:26px;
+    transform: rotate(1.5deg);
+  }
+  .about-card p{font-family:'Caveat', cursive; font-size:1.4rem; font-weight:700;}
+  .about-text p{
+    font-size:1.1rem;
+    margin-bottom:18px;
+    max-width:58ch;
+  }
+  .about-text strong{
+    background:var(--pencil); color:var(--ink);
+    padding:0 6px;
+  }
+  @media (max-width: 760px){
+    .about-grid{grid-template-columns:1fr;}
+  }
+
+  /* ============ HOBBIES ============ */
+  .hobbies{background:var(--paper);}
+  .hobby-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:26px;
+  }
+  .hobby-card{
+    border: var(--border-thick);
+    background:var(--paper);
+    box-shadow: var(--shadow-sm);
+    padding:24px 20px 20px;
+    min-height:220px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor:default;
+  }
+  .hobby-card:nth-child(1){background:var(--pencil); transform:rotate(-2deg);}
+  .hobby-card:nth-child(2){background:#FFFFFF; transform:rotate(1.5deg);}
+  .hobby-card:nth-child(3){background:var(--coral); color:var(--paper); transform:rotate(-1deg);}
+  .hobby-card:nth-child(4){background:var(--denim); color:var(--paper); transform:rotate(2deg);}
+  .hobby-card:hover{
+    transform: translateY(-6px) rotate(0deg) !important;
+    box-shadow: var(--shadow-md);
+  }
+  .hobby-icon{width:42px; height:42px;}
+  .hobby-card h3{font-size:1.3rem; margin-top:16px;}
+  .hobby-card span{
+    display:block; margin-top:10px;
+    font-size:0.95rem; font-weight:500;
+  }
+  @media (max-width: 900px){
+    .hobby-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width: 540px){
+    .hobby-grid{grid-template-columns:1fr;}
+    .hobby-card{transform:none !important;}
+  }
+
+  /* ============ CONNECT ============ */
+  .connect{
+    background:var(--ink); color:var(--paper);
+    text-align:center;
+  }
+  .connect .section-num{color:var(--coral); border-color:var(--coral); display:inline-block;}
+  .connect h2{
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    margin-bottom:34px;
+  }
+  .insta-stamp{
+    display:inline-flex; align-items:center; gap:14px;
+    border: 4px solid var(--paper);
+    padding:18px 30px;
+    font-size:1.4rem;
+    font-weight:700;
+    background:transparent;
+    box-shadow: 8px 8px 0 var(--coral);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .insta-stamp:hover{
+    transform:translate(-4px,-4px);
+    box-shadow: 12px 12px 0 var(--coral);
+  }
+  .insta-stamp svg{width:30px; height:30px;}
+  .connect-note{
+    margin-top:26px;
+    font-family:'Caveat', cursive;
+    font-size:1.3rem;
+    color:var(--pencil);
+    max-width:40ch; margin-left:auto; margin-right:auto;
+  }
+  footer{
+    padding:26px 0 40px;
+    text-align:center;
+    font-size:0.85rem;
+    color:rgba(247,243,233,0.55);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-brand">Zaira Mae</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#hobbies">Hobbies</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="home" class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-photo-wrap">
+      <!-- Replace this svg with <img src="your-photo.jpg" alt="Zaira Mae A. Lozada"> when you have a real photo -->
+ <img src="./WhatsApp Image 2026-09-14 at 9.31.47 PM.jpeg" alt="Zaira Mae A. Lozada">        <rect width="300" height="330" fill="#FFCC29"/>
+        <rect x="0" y="230" width="300" height="100" fill="#3A6EA5"/>
+        <circle cx="150" cy="140" r="72" fill="#F7F3E9" stroke="#171614" stroke-width="5"/>
+        <path d="M60 330 C60 250 110 220 150 220 C190 220 240 250 240 330 Z" fill="#FF5A5F" stroke="#171614" stroke-width="5"/>
+        <circle cx="150" cy="140" r="72" fill="none" stroke="#171614" stroke-width="5"/>
+        <path d="M112 150 Q150 185 188 150" stroke="#171614" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="122" cy="128" r="6" fill="#171614"/>
+        <circle cx="178" cy="128" r="6" fill="#171614"/>
+        <path d="M95 100 Q150 55 205 100" stroke="#171614" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M228 190 v70 M228 190 q22 -6 22 16 q0 20 -22 14" stroke="#171614" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="222" cy="266" r="9" fill="#171614"/>
+      </svg>
+    </div>
+    <div class="hero-copy">
+      <span class="hero-eyebrow-tag">hi, I'm</span>
+      <h1 class="hero-name">Zaira Mae A.<span class="last">Lozada</span></h1>
+      <p class="hero-tagline">Future elementary school teacher, forever curious student — usually humming a tune while figuring out how the world works.</p>
+      <div class="hero-cta">
+        <a href="#about" class="btn">Get to know me</a>
+        <a href="#connect" class="btn ghost">Say hi on Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">the short version</span>
+      <h2>About Me</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <p>"Still figuring it out, and loving every part of that."</p>
+      </div>
+      <div class="about-text">
+        <p>I'm a student currently working toward a <strong>Bachelor of Elementary Education</strong> degree — training for a job that's really about paying attention to people and helping them find their footing.</p>
+        <p>Outside the classroom, I'm the kind of person who asks a lot of questions. New topics, new skills, new places to look — if it's unfamiliar, I probably want to try it. That curiosity is less a hobby and more just how I move through most days.</p>
+        <p>When I need to slow down, music does the job. Whether I'm singing along or just letting an album play in the background, it's usually the thing that resets me.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOBBIES ============ -->
+<section id="hobbies" class="hobbies">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">what fills my free time</span>
+      <h2>Hobbies &amp; Interests</h2>
+    </div>
+    <div class="hobby-grid">
+      <div class="hobby-card">
+        <svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="#171614" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <div>
+          <h3>Singing</h3>
+          <span>My go-to way to unwind — and the fastest way to tell what mood I'm in.</span>
+        </div>
+      </div>
+      <div class="hobby-card">
+        <svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="#171614" stroke-width="2"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1v-6h3zM3 19a2 2 0 002 2h1v-6H3z"/></svg>
+        <div>
+          <h3>Listening to Music</h3>
+          <span>Always something playing, from study sessions to quiet Sunday mornings.</span>
+        </div>
+      </div>
+      <div class="hobby-card">
+        <svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="#F7F3E9" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <div>
+          <h3>Chasing New Things</h3>
+          <span>New topics, skills, and ideas — I'm curious first and cautious second.</span>
+        </div>
+      </div>
+      <div class="hobby-card">
+        <svg class="hobby-icon" viewBox="0 0 24 24" fill="none" stroke="#F7F3E9" stroke-width="2"><path d="M12 20s-7-4.35-9.5-8.5C1 8 2.7 4.5 6.2 4.5c2 0 3.3 1.1 3.8 2 .5-.9 1.8-2 3.8-2 3.5 0 5.2 3.5 3.7 7-2.5 4.15-9.5 8.5-9.5 8.5z"/></svg>
+        <div>
+          <h3>Growing, On Purpose</h3>
+          <span>I look for small opportunities to learn something I didn't know last week.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONNECT ============ -->
+<section id="connect" class="connect">
+  <div class="wrap">
+    <span class="section-num">find me here</span>
+    <h2>Let's Connect</h2>
+    <a class="insta-stamp" href="https://www.instagram.com/its.zairuh?stkn=MW8za2hjOW5mMG5icA==" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
+      @its.zairuh
+    </a>
+    <p class="connect-note">(swap this handle for your real one in the code — search for "zairamae.lozada")</p>
+  </div>
+  <footer>Made with care — Zaira Mae A. Lozada</footer>
+</section>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector('.nav-links a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
+</body>
+</html>
